@@ -1,9 +1,5 @@
 //PASOS PARA TRABAJAR APIS CON HTTP REQUEST
-
-
-
-
-
+/*
 (() => {
     //1 - Instanciar XMLHttpRequest
     const xhr = new XMLHttpRequest()
@@ -46,4 +42,34 @@
 
     //4 - send
     xhr.send()
+})()
+*/
+
+//API Fetch
+
+(() => {
+    const $fetch = document.getElementById('fetch')
+    const $fragment = document.createDocumentFragment()
+
+    const API = 'https://jsonplaceholder.typicode.com/users'
+
+    //USAR FETCH --> recibe URL de la API
+    fetch(API)
+    //solicita la respuesta y la returna en formato JSON --> existen otros formatos
+    .then(response => response.ok ? response.json() : Promise.reject(response))
+    //En este then se recibe la informacion en JSON
+    .then(data => {
+        //Se recorre la informacion 
+        data.forEach(el => {
+            //Se imprimen en pantalla
+            const $li = document.createElement('li')
+            $li.innerHTML = `${el.name} -- ${el.email} -- ${el.phone}`
+            $fragment.appendChild($li)
+        }); 
+        $fetch.appendChild($fragment)
+    })
+    .catch(error => {
+        const message = error.statusText || 'Ocurrio un error'
+        $fetch.innerHTML = `Error ${error.status} : ${message}`
+    })
 })()
